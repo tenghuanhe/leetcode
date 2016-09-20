@@ -1,25 +1,27 @@
 package com.blop.leetcode;
 
+import java.util.Arrays;
+
 /**
- * Created by tenghuanhe on 2016/7/19.
+ * Created by tenghuanhe on 2016/7/29.
  */
-public class FindMedian {
+public class GetLeastNumbers {
     public static void main(String[] args) {
-//        int[] arr = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
         int arr[] = {3, 7, 9, 5, 6, 1};
-        System.out.println(partition(arr, 0, arr.length - 1));
-//        System.out.println(median(arr));
+        System.out.println(Arrays.toString(getLeastNumbers(arr, 3)));
     }
 
-    public static int median(int[] arr) {
-        int len = arr.length;
-        int middle = len >> 1;
-        int start = 0;
-        int end = len - 1;
-        int index = partition(arr, start, end);
+    public static int[] getLeastNumbers(int arr[], int k) {
+        int[] result = new int[k];
+        if (arr == null || arr.length == 0 || k > arr.length) {
+            return result;
+        }
 
-        while (index != middle) {
-            if (index > middle) {
+        int start = 0;
+        int end = arr.length - 1;
+        int index = partition(arr, start, end);
+        while (index != k - 1) {
+            if (index > k - 1) {
                 end = index - 1;
                 index = partition(arr, start, end);
             } else {
@@ -27,16 +29,18 @@ public class FindMedian {
                 index = partition(arr, start, end);
             }
         }
-
-        int result = arr[middle];
+        for (int i = 0; i < k; i++) {
+            result[i] = arr[i];
+        }
 
         return result;
     }
 
-    public static int partition(int[] arr, int start, int end) {
+    public static int partition(int arr[], int start, int end) {
         if (start > end) {
             return 0;
         }
+
         int i = start, j = end, x = arr[start];
 
         while (i < j) {
@@ -52,7 +56,6 @@ public class FindMedian {
             while (i < j && arr[i] <= x) {
                 i++;
             }
-
             if (i < j) {
                 arr[j] = arr[i];
                 j--;
